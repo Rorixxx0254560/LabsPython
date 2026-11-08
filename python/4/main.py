@@ -3,95 +3,82 @@
 from abc import ABC, abstractmethod
 
 
-class SortingStrategy(ABC):
-
+class AttackStrategy(ABC):
     @abstractmethod
-    def sort(self, array):
+    def attack(self):
         pass
 
 
-class BubbleSortStrategy(SortingStrategy):
-
-    def sort(self, array):
-        print("Сортировка пузырьком")
-
-
-class QuickSortStrategy(SortingStrategy):
-
-    def sort(self, array):
-        print("Быстрая сортировка")
+class SwordAttack(AttackStrategy):
+    def attack(self):
+        print("Атака мечом")
 
 
-class Sorter:
+class BowAttack(AttackStrategy):
+    def attack(self):
+        print("Атака луком")
 
-    def __init__(self):
-        self.strategy = None
 
-    def set_strategy(self, strategy):
+class Player:
+    def __init__(self, strategy):
         self.strategy = strategy
 
-    def sort_array(self, array):
-        self.strategy.sort(array)
+    def attack(self):
+        self.strategy.attack()
 
 
-sorter = Sorter()
+player = Player(SwordAttack())
+player.attack()
 
-sorter.set_strategy(BubbleSortStrategy())
-sorter.sort_array([5, 3, 8, 4, 2])
-
-sorter.set_strategy(QuickSortStrategy())
-sorter.sort_array([5, 3, 8, 4, 2])
+player.strategy = BowAttack()
+player.attack()
 
 
 # 2
 
+class Handler:
+    def __init__(self, next_handler=None):
+        self.next_handler = next_handler
 
-from abc import ABC, abstractmethod
-
-
-class Handler(ABC):
-
-    def __init__(self):
-        self.next_handler = None
-
-    def set_next_handler(self, handler):
-        self.next_handler = handler
-
-    @abstractmethod
-    def handle_request(self, request):
-        pass
+    def handle(self, level):
+        if self.next_handler:
+            self.next_handler.handle(level)
 
 
-class HandlerA(Handler):
-
-    def handle_request(self, request):
-        if request == "A":
-            print("HandlerA обработал запрос")
-        elif self.next_handler:
-            self.next_handler.handle_request(request)
-
-
-class HandlerB(Handler):
-
-    def handle_request(self, request):
-        if request == "B":
-            print("HandlerB обработал запрос")
-        elif self.next_handler:
-            self.next_handler.handle_request(request)
+class Operator(Handler):
+    def handle(self, level):
+        if level == 1:
+            print("Проблему решил оператор")
+        else:
+            super().handle(level)
 
 
-handler_a = HandlerA()
-handler_b = HandlerB()
+class Manager(Handler):
+    def handle(self, level):
+        if level == 2:
+            print("Проблему решил менеджер")
+        else:
+            super().handle(level)
 
-handler_a.set_next_handler(handler_b)
 
-handler_a.handle_request("A")
-handler_a.handle_request("B")
+class Director(Handler):
+    def handle(self, level):
+        if level == 3:
+            print("Проблему решил директор")
+        else:
+            super().handle(level)
+
+
+director = Director()
+manager = Manager(director)
+operator = Operator(manager)
+
+operator.handle(3)
+
 
 # 3
 
-class ArrayIterator:
-
+class MyIterator:
     def __init__(self, items):
         self.items = items
         self.position = 0
@@ -108,9 +95,9 @@ class ArrayIterator:
         raise StopIteration
 
 
-array = [10, 20, 30, 40, 50]
+numbers = [10, 20, 30, 40]
 
-iterator = ArrayIterator(array)
+iterator = MyIterator(numbers)
 
-for item in iterator:
-    print(item)
+for number in iterator:
+    print(number)
