@@ -3,11 +3,11 @@ from abc import ABC, abstractmethod
 
 class GameObject(ABC):
 
-    def init(self, object_id, name, X, Y):
-        self.object_id = object_id
+    def __init__(self, object_id, name, X, Y):
+        self.__object_id = object_id
         self.__name = name
-        self._X = X
-        self._Y = Y
+        self.X = X
+        self.Y = Y
 
     def getID(self):
         print(self.__object_id)
@@ -16,10 +16,10 @@ class GameObject(ABC):
         print(self.__name)
 
     def getX(self):
-        print(self._X)
+        print(self.X)
 
     def getY(self):
-        print(self._Y)
+        print(self.Y)
 
 
 class Attacker(ABC):
@@ -40,9 +40,9 @@ class Moveable(ABC):
 
 class Unit(GameObject, ABC):
 
-    def __init(self, object_id, name, X, Y, hp):
-        super().init(object_id, name, X, Y)
-        self.hp = hp
+    def __init__(self, object_id, name, X, Y, hp):
+        super().__init__(object_id, name, X, Y)
+        self.__hp = hp
 
     def is_Allive(self):
         return self.__hp > 0
@@ -59,9 +59,9 @@ class Unit(GameObject, ABC):
 
 class Archer(Unit, Attacker, Moveable):
 
-    def __init(self, object_id, name, X, Y, hp, damage):
-        super().init(object_id, name, X, Y, hp)
-        self.damage = damage
+    def __init__(self, object_id, name, X, Y, hp, damage):
+        super().__init__(object_id, name, X, Y, hp)
+        self.__damage = damage
 
     def attack(self, unit):
         if self.is_Allive() and unit.is_Allive():
@@ -69,15 +69,15 @@ class Archer(Unit, Attacker, Moveable):
 
     def move(self, X, Y):
         if self.is_Allive():
-            self._X = X
-            self._Y = Y
+            self.X = X
+            self.Y = Y
 
 
 class Building(GameObject, ABC):
 
-    def __init(self, object_id, name, X, Y, built):
-        super().init(object_id, name, X, Y)
-        self.built = built
+    def __init__(self, object_id, name, X, Y, built):
+        super().__init__(object_id, name, X, Y)
+        self.__built = built
 
     def is_Built(self):
         return self.__built
@@ -85,9 +85,9 @@ class Building(GameObject, ABC):
 
 class Fort(Building, Attacker):
 
-    def __init(self, object_id, name, X, Y, built, damage):
-        super().init(object_id, name, X, Y, built)
-        self.damage = damage
+    def __init__(self, object_id, name, X, Y, built, damage):
+        super().__init__(object_id, name, X, Y, built)
+        self.__damage = damage
 
     def attack(self, unit):
         if self.is_Built() and unit.is_Allive():
@@ -96,12 +96,12 @@ class Fort(Building, Attacker):
 
 class MobileHouse(Building, Moveable):
 
-    def __init(self, object_id, name, X, Y, built):
-        super().init(object_id, name, X, Y, built)
+    def __init__(self, object_id, name, X, Y, built):
+        super().__init__(object_id, name, X, Y, built)
 
     def move(self, X, Y):
-        self._X = X
-        self._Y = Y
+        self.X = X
+        self.Y = Y
 
 
 archer1 = Archer(1, "Roma", 10, 20, 100, 30)
@@ -111,6 +111,14 @@ fort = Fort(3, "Fort", 10, 20, True, 70)
 
 house = MobileHouse(4, "House", 5, 5, True)
 
+
+print("ID Roma:")
+archer1.getID()
+
+print("ID Sveta:")
+archer2.getID()
+
+print()
 
 print("HP Sveta:", archer2.getHp())
 
