@@ -6,8 +6,8 @@ class GameObject(ABC):
     def __init__(self, object_id, name, X, Y):
         self.__object_id = object_id
         self.__name = name
-        self.X = X
-        self.Y = Y
+        self.__X = X
+        self.__Y = Y
 
     def getID(self):
         print(self.__object_id)
@@ -16,10 +16,14 @@ class GameObject(ABC):
         print(self.__name)
 
     def getX(self):
-        print(self.X)
+        print(self.__X)
 
     def getY(self):
-        print(self.Y)
+        print(self.__Y)
+
+    def _setPosition(self, X, Y):
+        self.__X = X
+        self.__Y = Y
 
 
 class Attacker(ABC):
@@ -69,8 +73,7 @@ class Archer(Unit, Attacker, Moveable):
 
     def move(self, X, Y):
         if self.is_Allive():
-            self.X = X
-            self.Y = Y
+            self._setPosition(X, Y)
 
 
 class Building(GameObject, ABC):
@@ -100,8 +103,7 @@ class MobileHouse(Building, Moveable):
         super().__init__(object_id, name, X, Y, built)
 
     def move(self, X, Y):
-        self.X = X
-        self.Y = Y
+        self._setPosition(X, Y)
 
 
 archer1 = Archer(1, "Roma", 10, 20, 100, 30)
